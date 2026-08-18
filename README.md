@@ -8,6 +8,8 @@ I built this processor from small, testable circuits rather than treating the CP
 
 > **Working demonstration:** [https://youtu.be/jj5lmA1aICw](https://youtu.be/jj5lmA1aICw) (39 seconds).
 
+> **Full project report (PDF):** [`Project_report.pdf`](Project_report.pdf) — a 10-page report covering the design and implementation.
+
 ## What the computer implements
 
 | Property | Implementation |
@@ -222,6 +224,7 @@ The included Logisim memory images cover addition, comparisons, conditional jump
 ```text
 .
 ├── 22bit-computer.circ   # Complete Logisim project
+├── Project_report.pdf    # Full design and implementation report
 ├── programs/             # Loadable RAM test programs
 ├── screenshots/          # Curated circuit documentation used above
 ├── working.mp4           # End-to-end execution recording
