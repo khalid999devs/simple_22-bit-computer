@@ -8,14 +8,14 @@ I built this processor from small, testable circuits rather than treating the CP
 
 > **Working demonstration:** [https://youtu.be/jj5lmA1aICw](https://youtu.be/jj5lmA1aICw) (39 seconds).
 
-> **Full project report (PDF):** [`Project_report.pdf`](Project_report.pdf) — a 10-page report covering the design and implementation.
+> **Full project report (PDF):** [`Project_report.pdf`](Project_report.pdf), a 10-page report covering the design and implementation.
 
 ## What the computer implements
 
 | Property | Implementation |
 | --- | --- |
 | Word size | 22 bits |
-| Memory | 32 words × 22 bits |
+| Memory | 32 words x 22 bits |
 | Address width | 5 bits |
 | Instruction opcode | 4 bits |
 | Main registers | 22-bit accumulator (ACC), 22-bit memory buffer register (MBR), 4-bit instruction register (IR), 5-bit program counter (PC), and 5-bit memory address register (MAR) |
@@ -32,7 +32,7 @@ flowchart LR
     CLK[Clock / Reset] --> CU[Hardwired control unit]
     CU --> PC[5-bit PC]
     PC --> MAR[5-bit MAR]
-    MAR --> RAM[32 × 22 RAM]
+    MAR --> RAM[32 x 22 RAM]
     RAM <--> MBR[22-bit MBR]
     MBR --> IR[4-bit IR]
     MBR --> ALU[22-bit ALU]
@@ -97,7 +97,7 @@ The processor-specific registers are then built on top of those blocks:
 | Register | Role |
 | --- | --- |
 | MBR (22-bit) | Buffers instructions and data moving to or from RAM. |
-| IR (4-bit) | Holds bits 19–16 of the current instruction for opcode decoding. |
+| IR (4-bit) | Holds bits 19-16 of the current instruction for opcode decoding. |
 | PC (5-bit) | Holds the next instruction address and supports load, clear, and increment operations. |
 | MAR (5-bit) | Drives the RAM address input. |
 | ACC (22-bit) | Holds the primary ALU operand and receives arithmetic or loaded data. |
@@ -128,29 +128,29 @@ Only the fields needed by this machine are connected in the 22-bit instruction w
 
 | Bits | Width | Meaning |
 | --- | ---: | --- |
-| 21–20 | 2 | Reserved |
-| 19–16 | 4 | Opcode |
-| 15–5 | 11 | Reserved |
-| 4–0 | 5 | Memory or branch address |
+| 21-20 | 2 | Reserved |
+| 19-16 | 4 | Opcode |
+| 15-5 | 11 | Reserved |
+| 4-0 | 5 | Memory or branch address |
 
 For example, `060005` means opcode `6` (`LOAD`) with address `05`.
 
 | Opcode | Mnemonic | Operation |
 | ---: | --- | --- |
-| `0` | `AND` | `ACC ← ACC AND M[address]` |
-| `1` | `ADD` | `ACC ← ACC + M[address]` |
-| `2` | `STO` | `M[address] ← ACC` |
+| `0` | `AND` | `ACC <- ACC AND M[address]` |
+| `1` | `ADD` | `ACC <- ACC + M[address]` |
+| `2` | `STO` | `M[address] <- ACC` |
 | `3` | `ISZ` | Increment a memory word and skip the next instruction when the result is zero |
 | `4` | `BSB` | Branch-and-save operation for subroutine control flow |
 | `5` | `JMP` | Unconditional jump to `address` |
-| `6` | `LOAD` | `ACC ← M[address]` |
+| `6` | `LOAD` | `ACC <- M[address]` |
 | `7` | `HALT` | Stop the processor clock |
 | `8` | `CMP` | Compare the accumulator with `M[address]` and update flags |
 | `9` | `JZ` | Jump when the zero flag is set |
 | `A` | `JN` | Jump when the negative flag is set |
 | `B` | `JC` | Jump when the carry flag is set |
 | `C` | `JO` | Jump when the overflow flag is set |
-| `D`–`F` | — | Reserved for future instructions |
+| `D-F` | Not assigned | Reserved for future instructions |
 
 ## Running the project
 
@@ -160,7 +160,7 @@ The circuit was created with **Logisim 2.7.1**. Using the same version is recomm
 
 - A Java Runtime Environment available through the `java` command
 - `logisim-generic-2.7.1.jar`
-- A graphical desktop environment—Logisim is a desktop application
+- A graphical desktop environment because Logisim is a desktop application
 
 You can confirm that Java is available with:
 
@@ -200,10 +200,10 @@ Replace both paths with the locations on your computer. Because Java runs the ge
 ### Loading and executing a program
 
 1. Select **The 22bit Computer** from the circuit tree after Logisim opens.
-2. Right-click the **32 words RAM** component and choose **Load Image…**.
+2. Right-click the **32 words RAM** component and choose **Load Image...**.
 3. Select one of the memory images from [`programs/`](programs/).
 4. Assert **Reset** once to initialize the processor state.
-5. Use **Simulate → Ticks Enabled** for continuous execution, or pulse the clock manually to inspect individual state transitions.
+5. Use **Simulate > Ticks Enabled** for continuous execution, or pulse the clock manually to inspect individual state transitions.
 
 If the command reports that it cannot find Java, install a JRE and ensure `java` is on your `PATH`. If it cannot access the JAR or circuit, verify the two file paths and keep paths containing spaces inside quotes.
 
@@ -223,13 +223,13 @@ The included Logisim memory images cover addition, comparisons, conditional jump
 
 ```text
 .
-├── 22bit-computer.circ   # Complete Logisim project
-├── Project_report.pdf    # Full design and implementation report
-├── programs/             # Loadable RAM test programs
-├── screenshots/          # Curated circuit documentation used above
-├── working.mp4           # End-to-end execution recording
-├── LICENSE               # MIT open-source license
-└── README.md
+|-- 22bit-computer.circ   # Complete Logisim project
+|-- Project_report.pdf    # Full design and implementation report
+|-- programs/             # Loadable RAM test programs
+|-- screenshots/          # Curated circuit documentation used above
+|-- working.mp4           # End-to-end execution recording
+|-- LICENSE               # MIT open-source license
+`-- README.md
 ```
 
 ## What this project demonstrates
