@@ -6,7 +6,7 @@ I built this processor from small, testable circuits rather than treating the CP
 
 ![Complete 22-bit computer connected to its 32-word RAM](screenshots/computer-overview.png)
 
-> **Working demonstration:** [watch the computer execute a program in Logisim](working.mp4) (39 seconds).
+> **Working demonstration:** [watch the 22-bit computer execute a program in Logisim on YouTube](https://youtu.be/jj5lmA1aICw) (39 seconds).
 
 ## What the computer implements
 
