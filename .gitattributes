@@ -1,0 +1,4 @@
+*.circ text
+*.img text
+*.png binary
+*.mp4 binary
