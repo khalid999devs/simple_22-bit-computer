@@ -6,24 +6,24 @@ I built this processor from small, testable circuits rather than treating the CP
 
 ![Complete 22-bit computer connected to its 32-word RAM](screenshots/computer-overview.png)
 
-> **Working demonstration:** [https://youtu.be/jj5lmA1aICw](https://youtu.be/jj5lmA1aICw) (39 seconds).
+> **Working demonstration:** [https://youtu.be/YmHeGfOLJ7g](https://youtu.be/YmHeGfOLJ7g) (36 seconds).
 
 > **Full project report (PDF):** [`Project_report.pdf`](Project_report.pdf), a 10-page report covering the design and implementation.
 
 ## What the computer implements
 
-| Property | Implementation |
-| --- | --- |
-| Word size | 22 bits |
-| Memory | 32 words x 22 bits |
-| Address width | 5 bits |
-| Instruction opcode | 4 bits |
-| Main registers | 22-bit accumulator (ACC), 22-bit memory buffer register (MBR), 4-bit instruction register (IR), 5-bit program counter (PC), and 5-bit memory address register (MAR) |
-| ALU operations | OR, AND, addition, and subtraction |
-| Status flags | Negative, zero, carry, and overflow |
-| Control | Hardwired, multi-step fetch/execute control |
-| Branching | Unconditional, subroutine, and flag-dependent jumps |
-| Additional arithmetic unit | Sequential 22-bit Booth multiplier with a 44-bit product |
+| Property                   | Implementation                                                                                                                                                      |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Word size                  | 22 bits                                                                                                                                                             |
+| Memory                     | 32 words x 22 bits                                                                                                                                                  |
+| Address width              | 5 bits                                                                                                                                                              |
+| Instruction opcode         | 4 bits                                                                                                                                                              |
+| Main registers             | 22-bit accumulator (ACC), 22-bit memory buffer register (MBR), 4-bit instruction register (IR), 5-bit program counter (PC), and 5-bit memory address register (MAR) |
+| ALU operations             | OR, AND, addition, and subtraction                                                                                                                                  |
+| Status flags               | Negative, zero, carry, and overflow                                                                                                                                 |
+| Control                    | Hardwired, multi-step fetch/execute control                                                                                                                         |
+| Branching                  | Unconditional, subroutine, and flag-dependent jumps                                                                                                                 |
+| Additional arithmetic unit | Sequential 22-bit Booth multiplier with a 44-bit product                                                                                                            |
 
 The processor uses one RAM for instructions and data. The control unit moves values between the PC, MAR, RAM, MBR, IR, ACC, and ALU through explicit control signals. This made the fetch and execute phases visible at gate level and was one of the most useful parts of the project: every register transfer can be followed directly in the simulator.
 
@@ -50,8 +50,8 @@ flowchart LR
 
 The arithmetic path is hierarchical. A 4-bit carry-lookahead adder calculates propagate and generate terms so carries do not have to ripple through every bit. A separate 2-bit CLA handles the remaining width. Five 4-bit adder/subtractor blocks plus one 2-bit block produce the full 22-bit result.
 
-| 4-bit CLA | 2-bit CLA |
-| --- | --- |
+| 4-bit CLA                                                          | 2-bit CLA                                                          |
+| ------------------------------------------------------------------ | ------------------------------------------------------------------ |
 | ![Complete 4-bit carry-lookahead adder](screenshots/4-bit-cla.png) | ![Complete 2-bit carry-lookahead adder](screenshots/2-bit-cla.png) |
 
 The assembled adder supports both addition and two's-complement subtraction. Its control input selects add or subtract, while the extra logic reports carry-out and signed overflow independently.
@@ -63,11 +63,11 @@ The assembled adder supports both addition and two's-complement subtraction. Its
 The ALU accepts two 22-bit operands and selects one of four results:
 
 | ALU control | Operation |
-| --- | --- |
-| `00` | OR |
-| `01` | AND |
-| `10` | Add |
-| `11` | Subtract |
+| ----------- | --------- |
+| `00`        | OR        |
+| `01`        | AND       |
+| `10`        | Add       |
+| `11`        | Subtract  |
 
 Alongside the result, the ALU produces the negative, zero, carry, and overflow conditions. Those four values are captured in a flag register and fed back into the control unit for comparison and conditional branches.
 
@@ -88,26 +88,26 @@ I used two reusable register families throughout the design:
 
 Both families are assembled from 4-bit slices with a final 2-bit slice, which keeps the 22-bit circuits manageable and makes each layer independently testable.
 
-| 22-bit parallel-load register | 22-bit count/parallel-load register |
-| --- | --- |
+| 22-bit parallel-load register                                         | 22-bit count/parallel-load register                             |
+| --------------------------------------------------------------------- | --------------------------------------------------------------- |
 | ![Complete 22-bit PLR](screenshots/22-bit-parallel-load-register.png) | ![Complete 22-bit CPL](screenshots/22-bit-counter-register.png) |
 
 The processor-specific registers are then built on top of those blocks:
 
-| Register | Role |
-| --- | --- |
-| MBR (22-bit) | Buffers instructions and data moving to or from RAM. |
-| IR (4-bit) | Holds bits 19-16 of the current instruction for opcode decoding. |
-| PC (5-bit) | Holds the next instruction address and supports load, clear, and increment operations. |
-| MAR (5-bit) | Drives the RAM address input. |
-| ACC (22-bit) | Holds the primary ALU operand and receives arithmetic or loaded data. |
+| Register     | Role                                                                                   |
+| ------------ | -------------------------------------------------------------------------------------- |
+| MBR (22-bit) | Buffers instructions and data moving to or from RAM.                                   |
+| IR (4-bit)   | Holds bits 19-16 of the current instruction for opcode decoding.                       |
+| PC (5-bit)   | Holds the next instruction address and supports load, clear, and increment operations. |
+| MAR (5-bit)  | Drives the RAM address input.                                                          |
+| ACC (22-bit) | Holds the primary ALU operand and receives arithmetic or loaded data.                  |
 
-| MBR | IR |
-| --- | --- |
+| MBR                                                                      | IR                                                                  |
+| ------------------------------------------------------------------------ | ------------------------------------------------------------------- |
 | ![22-bit memory buffer register](screenshots/memory-buffer-register.png) | ![4-bit instruction register](screenshots/instruction-register.png) |
 
-| PC | MAR | ACC |
-| --- | --- | --- |
+| PC                                                        | MAR                                                                       | ACC                                                |
+| --------------------------------------------------------- | ------------------------------------------------------------------------- | -------------------------------------------------- |
 | ![5-bit program counter](screenshots/program-counter.png) | ![5-bit memory address register](screenshots/memory-address-register.png) | ![22-bit accumulator](screenshots/accumulator.png) |
 
 ## Control unit
@@ -126,31 +126,31 @@ The ALU selector converts the one-hot arithmetic instruction signals into the AL
 
 Only the fields needed by this machine are connected in the 22-bit instruction word:
 
-| Bits | Width | Meaning |
-| --- | ---: | --- |
-| 21-20 | 2 | Reserved |
-| 19-16 | 4 | Opcode |
-| 15-5 | 11 | Reserved |
-| 4-0 | 5 | Memory or branch address |
+| Bits  | Width | Meaning                  |
+| ----- | ----: | ------------------------ |
+| 21-20 |     2 | Reserved                 |
+| 19-16 |     4 | Opcode                   |
+| 15-5  |    11 | Reserved                 |
+| 4-0   |     5 | Memory or branch address |
 
 For example, `060005` means opcode `6` (`LOAD`) with address `05`.
 
-| Opcode | Mnemonic | Operation |
-| ---: | --- | --- |
-| `0` | `AND` | `ACC <- ACC AND M[address]` |
-| `1` | `ADD` | `ACC <- ACC + M[address]` |
-| `2` | `STO` | `M[address] <- ACC` |
-| `3` | `ISZ` | Increment a memory word and skip the next instruction when the result is zero |
-| `4` | `BSB` | Branch-and-save operation for subroutine control flow |
-| `5` | `JMP` | Unconditional jump to `address` |
-| `6` | `LOAD` | `ACC <- M[address]` |
-| `7` | `HALT` | Stop the processor clock |
-| `8` | `CMP` | Compare the accumulator with `M[address]` and update flags |
-| `9` | `JZ` | Jump when the zero flag is set |
-| `A` | `JN` | Jump when the negative flag is set |
-| `B` | `JC` | Jump when the carry flag is set |
-| `C` | `JO` | Jump when the overflow flag is set |
-| `D-F` | Not assigned | Reserved for future instructions |
+| Opcode | Mnemonic     | Operation                                                                     |
+| -----: | ------------ | ----------------------------------------------------------------------------- |
+|    `0` | `AND`        | `ACC <- ACC AND M[address]`                                                   |
+|    `1` | `ADD`        | `ACC <- ACC + M[address]`                                                     |
+|    `2` | `STO`        | `M[address] <- ACC`                                                           |
+|    `3` | `ISZ`        | Increment a memory word and skip the next instruction when the result is zero |
+|    `4` | `BSB`        | Branch-and-save operation for subroutine control flow                         |
+|    `5` | `JMP`        | Unconditional jump to `address`                                               |
+|    `6` | `LOAD`       | `ACC <- M[address]`                                                           |
+|    `7` | `HALT`       | Stop the processor clock                                                      |
+|    `8` | `CMP`        | Compare the accumulator with `M[address]` and update flags                    |
+|    `9` | `JZ`         | Jump when the zero flag is set                                                |
+|    `A` | `JN`         | Jump when the negative flag is set                                            |
+|    `B` | `JC`         | Jump when the carry flag is set                                               |
+|    `C` | `JO`         | Jump when the overflow flag is set                                            |
+|  `D-F` | Not assigned | Reserved for future instructions                                              |
 
 ## Running the project
 
@@ -209,15 +209,15 @@ If the command reports that it cannot find Java, install a JRE and ensure `java`
 
 The included Logisim memory images cover addition, comparisons, conditional jumps, overflow/carry/negative cases, and subroutine-style branching:
 
-| Program image | Purpose |
-| --- | --- |
-| [`simple_add.img`](programs/simple_add.img) | Basic load, addition, store, and halt path |
-| [`compare_n_jmp.img`](programs/compare_n_jmp.img) | Compare followed by conditional control flow |
-| [`negJump.img`](programs/negJump.img) | Negative-flag branch case |
-| [`jmp_carry.img`](programs/jmp_carry.img) | Carry-flag branch case |
-| [`jmp_overflow.img`](programs/jmp_overflow.img) | Overflow-flag branch case |
-| [`branch_subroutine_jmp.img`](programs/branch_subroutine_jmp.img) | Branch/save and jump-based subroutine path |
-| [`newImg.img`](programs/newImg.img) | Small smoke-test memory image |
+| Program image                                                     | Purpose                                      |
+| ----------------------------------------------------------------- | -------------------------------------------- |
+| [`simple_add.img`](programs/simple_add.img)                       | Basic load, addition, store, and halt path   |
+| [`compare_n_jmp.img`](programs/compare_n_jmp.img)                 | Compare followed by conditional control flow |
+| [`negJump.img`](programs/negJump.img)                             | Negative-flag branch case                    |
+| [`jmp_carry.img`](programs/jmp_carry.img)                         | Carry-flag branch case                       |
+| [`jmp_overflow.img`](programs/jmp_overflow.img)                   | Overflow-flag branch case                    |
+| [`branch_subroutine_jmp.img`](programs/branch_subroutine_jmp.img) | Branch/save and jump-based subroutine path   |
+| [`newImg.img`](programs/newImg.img)                               | Small smoke-test memory image                |
 
 ## Repository layout
 
